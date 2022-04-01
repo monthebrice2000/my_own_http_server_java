@@ -7,6 +7,8 @@ import java.net.Socket;
 
 import httpserver.itf.HttpRequest;
 import httpserver.itf.HttpResponse;
+import httpserver.itf.HttpRicmletRequest;
+import httpserver.itf.HttpRicmletResponse;
 
 /*
  * Worker class
@@ -28,11 +30,15 @@ public class HttpWorker extends Thread {
 			PrintStream ps = new PrintStream(m_soc.getOutputStream());
 
 			// build HttpRequest and HttpResponse objects for these input and output streams
-			HttpRequest req = m_hs.getRequest(br);
-			HttpResponse resp = m_hs.getResponse(req, ps);
+			//HttpRequest req = m_hs.getRequest(br);
+			//HttpResponse resp = m_hs.getResponse(req, ps);
+
+			HttpRicmletRequest req = m_hs.getRicmletRequest(br);
+			HttpRicmletResponse resp = m_hs.getRicmletResponse(req, ps);
 			
 			// process the HTTP request
 			req.process(resp);
+			System.out.println("Thread end +++++++++");
 		} catch (Exception e) {
 			System.err.println("Server exception, skipping to next request " + e);		
 		} finally {

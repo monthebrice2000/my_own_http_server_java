@@ -1,18 +1,20 @@
 package httpserver.itf;
 
+import httpserver.itf.impl.HttpServer;
+
 import java.io.BufferedReader;
 import java.io.IOException;
-
-import httpserver.itf.impl.HttpServer;
 
 /*
  * Interface provided by an object representing a dynamic HTTP request 
  * A dynamic HTTP request involves an ricmlet
  */
 public abstract class HttpRicmletRequest extends HttpRequest {
-	
+
+	protected BufferedReader br ;
 	public HttpRicmletRequest(HttpServer hs, String method, String ressname, BufferedReader br) throws IOException {
 		super(hs,method,ressname);
+		this.br = br;
 	}
 
 	/*
@@ -32,6 +34,10 @@ public abstract class HttpRicmletRequest extends HttpRequest {
 	 * Returns null if there is no cookie with that name
 	 */
 	abstract public String getCookie(String name);
+
+
+
+
 	
 	
 }

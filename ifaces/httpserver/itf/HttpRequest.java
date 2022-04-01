@@ -1,15 +1,16 @@
 package httpserver.itf;
 
+import httpserver.itf.impl.HttpServer;
+
 import java.io.IOException;
 
-import httpserver.itf.impl.HttpServer;
 
 /* 
  * This class is used to build an object representing an HTTP request
  */
 public abstract class HttpRequest {
 
-	protected HttpServer m_hs; 
+	protected HttpServer m_hs;
 	protected String m_method;
 	protected String m_ressname;
 

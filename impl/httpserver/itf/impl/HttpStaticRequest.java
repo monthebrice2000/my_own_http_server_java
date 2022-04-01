@@ -1,8 +1,6 @@
 package httpserver.itf.impl;
 
 import java.io.*;
-import java.nio.charset.CharsetDecoder;
-import java.nio.charset.StandardCharsets;
 
 
 import httpserver.itf.HttpRequest;
@@ -28,7 +26,7 @@ public class HttpStaticRequest extends HttpRequest {
 			fileToSend = this.segmentPath( this.getRessname().split("/") );
 		}
 
-		if( fileToSend.equals("FILES") ){
+		if( fileToSend.equals("FILES") || fileToSend.equals("") ){
 			index = new File( "FILES", "index.html" );
 		}else if( folder.getName().equals("FILES")  ){
 			index = new File( folder, fileToSend );
