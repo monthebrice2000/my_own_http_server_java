@@ -12,4 +12,11 @@ public interface HttpRicmletResponse extends HttpResponse {
 
 
 
+	/*
+	 * send a cookie to the request
+	 */
+	abstract public void sendCookie();
+
+
+
 }

@@ -116,7 +116,7 @@ public class HttpServer {
 			while (true) {
 				Socket soc = m_ssoc.accept();
 				(new HttpWorker(this, soc)).start();
-				System.out.println("+++++++++++++++ Thread died");
+				//System.out.println("+++++++++++++++ Thread died");
 			}
 		} catch (IOException e) {
 			System.out.println("HttpServer Exception, skipping request");

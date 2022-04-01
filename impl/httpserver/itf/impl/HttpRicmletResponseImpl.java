@@ -2,6 +2,7 @@ package httpserver.itf.impl;
 
 import httpserver.itf.HttpRequest;
 import httpserver.itf.HttpResponse;
+import httpserver.itf.HttpRicmletRequest;
 import httpserver.itf.HttpRicmletResponse;
 
 import java.io.IOException;
@@ -14,9 +15,9 @@ import java.util.Date;
 class HttpRicmletResponseImpl implements HttpRicmletResponse {
 	protected HttpServer m_hs;
 	protected PrintStream m_ps;
-	protected HttpRequest m_req;
+	protected HttpRicmletRequest m_req;
 
-	protected HttpRicmletResponseImpl(HttpServer hs, HttpRequest req, PrintStream ps) {
+	protected HttpRicmletResponseImpl(HttpServer hs, HttpRicmletRequest req, PrintStream ps) {
 		m_hs = hs;
 		m_req = req;
 		m_ps = ps;
@@ -26,6 +27,10 @@ class HttpRicmletResponseImpl implements HttpRicmletResponse {
 		m_ps.println("HTTP/1.0 200 OK");
 		m_ps.println("Date: " + new Date());
 		m_ps.println("Server: ricm-http 1.0");
+	}
+
+	public void sendCookie(){
+		m_ps.println("Set-Cookie: "+ "MyFirstCookie" + "=" + this.m_req.getCookie("MyFirstCookie") );
 	}
 
 	public void setReplyError(int codeRet, String msg) throws IOException {
@@ -59,6 +64,6 @@ class HttpRicmletResponseImpl implements HttpRicmletResponse {
 
 	@Override
 	public void setCookie(String name, String value) {
-
+		this.m_req.cookiess.put(name, value);
 	}
 }

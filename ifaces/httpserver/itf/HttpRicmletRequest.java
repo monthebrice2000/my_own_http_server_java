@@ -4,6 +4,7 @@ import httpserver.itf.impl.HttpServer;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.HashMap;
 
 /*
  * Interface provided by an object representing a dynamic HTTP request 
@@ -12,6 +13,8 @@ import java.io.IOException;
 public abstract class HttpRicmletRequest extends HttpRequest {
 
 	protected BufferedReader br ;
+	static public HashMap<String, String> cookiess;
+
 	public HttpRicmletRequest(HttpServer hs, String method, String ressname, BufferedReader br) throws IOException {
 		super(hs,method,ressname);
 		this.br = br;

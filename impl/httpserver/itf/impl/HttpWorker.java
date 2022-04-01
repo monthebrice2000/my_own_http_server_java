@@ -38,7 +38,7 @@ public class HttpWorker extends Thread {
 			
 			// process the HTTP request
 			req.process(resp);
-			System.out.println("Thread end +++++++++");
+			//System.out.println("Thread end +++++++++");
 		} catch (Exception e) {
 			System.err.println("Server exception, skipping to next request " + e);		
 		} finally {

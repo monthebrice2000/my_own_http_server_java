@@ -1,18 +1,23 @@
 package httpserver.itf.impl;
 import examples.CountRicmlet;
 import examples.HelloRicmlet;
+import examples.MyFirstCookieRicmlet;
 import httpserver.itf.*;
 
 import java.io.*;
+import java.util.HashMap;
 
 /*
  * This class allows to build an object representing an HTTP static request
  */
 public class HttpRicmletRequestImpl extends HttpRicmletRequest {
 	static final String DEFAULT_FILE = "index.html";
+	static HashMap<String, HttpRicmlet> servlets = new HashMap<>(2);
 
 	public HttpRicmletRequestImpl(HttpServer hs, String method, String ressname, BufferedReader br) throws IOException {
 		super(hs, method, ressname, br);
+		this.cookiess = new HashMap<>(10);
+		this.initCookies( this.br );
 	}
 
 	public void process(HttpResponse resp) throws Exception {
@@ -24,21 +29,45 @@ public class HttpRicmletRequestImpl extends HttpRicmletRequest {
 		 * Handle dynamic pages
 		 */
 		if (pathName.startsWith("/ricmlets/examples/HelloRicmlet")) {
-			String clsName = "examples.HelloRicmlet";
-			Class<?> c = Class.forName(clsName);
-			HttpRicmlet helloRicmlet = (HelloRicmlet) c.getDeclaredConstructor().newInstance();
-			helloRicmlet.doGet(this, (HttpRicmletResponse) resp);
-			System.out.println("I was there sorry");
+            HttpRicmlet helloRicmlet = null;
+            if( this.servlets.get("HelloRicmlet") == null ){
+                String clsName = "examples.HelloRicmlet";
+                Class<?> c = Class.forName(clsName);
+                helloRicmlet = (HelloRicmlet) c.getDeclaredConstructor().newInstance();
+                this.servlets.put("HelloRicmlet", helloRicmlet );
+            }else{
+                helloRicmlet = this.servlets.get("helloRicmlet");
+            }
+            helloRicmlet.doGet(this, (HttpRicmletResponse) resp);
 		} else if (pathName.startsWith("/ricmlets/examples/CountRicmlet")) {
-			String clsName2 = "examples.CountRicmlet";
-			Class<?> c2 = Class.forName(clsName2);
-			HttpRicmlet countRicmlet = (CountRicmlet) c2.getDeclaredConstructor().newInstance();
+            HttpRicmlet countRicmlet = null;
+		    if( this.servlets.get("CountRicmlet") == null ){
+                String clsName2 = "examples.CountRicmlet";
+                Class<?> c2 = Class.forName(clsName2);
+                countRicmlet = (CountRicmlet) c2.getDeclaredConstructor().newInstance();
+                this.servlets.put("CountRicmlet", countRicmlet );
+            }else{
+		        countRicmlet = this.servlets.get("CountRicmlet");
+            }
 			countRicmlet.doGet(this, (HttpRicmletResponse) resp);
-			System.out.println("I was there sorry");
 			/**
 			 * Handle static pages
 			 */
-		} else {
+		} else if (pathName.startsWith("/ricmlets/examples/MyFirstCookieRicmlet")) {
+            HttpRicmlet myFirstCookieRicmlet = null;
+            if( this.servlets.get("MyFirstCookieRicmlet") == null ){
+                String clsName3 = "examples.MyFirstCookieRicmlet";
+                Class<?> c3 = Class.forName(clsName3);
+                myFirstCookieRicmlet = (MyFirstCookieRicmlet) c3.getDeclaredConstructor().newInstance();
+                this.servlets.put("MyFirstCookieRicmlet", myFirstCookieRicmlet );
+            }else{
+                myFirstCookieRicmlet = this.servlets.get("MyFirstCookieRicmlet");
+            }
+            myFirstCookieRicmlet.doGet(this, (HttpRicmletResponse) resp);
+            /**
+             * Handle static pages
+             */
+        } else {
 			System.out.println("It's a static request");
 			File folder = this.m_hs.getFolder();
 			String fileToSend = null;
@@ -100,6 +129,27 @@ public class HttpRicmletRequestImpl extends HttpRicmletRequest {
 
 	@Override
 	public String getCookie(String name) {
-		return null;
+		/*if( this.cookiess.get("name") == null ){
+			this.cookiess.put(name, name);
+		}*/
+		return this.cookiess.get(name);
+	}
+
+	private void initCookies(BufferedReader br ) throws IOException {
+		String line = null;
+		while( (line = br.readLine() ) != null ){
+			if( line.toLowerCase().contains("cookie") )
+				break;
+		}
+
+		if( line != null ){
+			String[] keys = line.split("Cookie: ")[1].split(";");
+
+			for( String item : keys ){
+				String key = item.split("=")[0];
+				String value = item.split("=")[1];
+				this.cookiess.put(key, value);
+			}
+		}
 	}
 }
