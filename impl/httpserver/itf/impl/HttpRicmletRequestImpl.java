@@ -132,7 +132,7 @@ public class HttpRicmletRequestImpl extends HttpRicmletRequest {
 		/*if( this.cookiess.get("name") == null ){
 			this.cookiess.put(name, name);
 		}*/
-		return this.cookiess.get(name);
+		return (String) this.cookiess.get(name);
 	}
 
 	private void initCookies(BufferedReader br ) throws IOException {

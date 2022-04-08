@@ -13,7 +13,7 @@ import java.util.HashMap;
 public abstract class HttpRicmletRequest extends HttpRequest {
 
 	protected BufferedReader br ;
-	static public HashMap<String, String> cookiess;
+	static public HashMap<String, Object> cookiess;
 
 	public HttpRicmletRequest(HttpServer hs, String method, String ressname, BufferedReader br) throws IOException {
 		super(hs,method,ressname);
